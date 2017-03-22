@@ -1,14 +1,3 @@
-"""
-Le premier prgramme en Python
-* utilisation des arguments de la lignne de commande
-* les processus
-* le logger
-
-@author Dragos STOICA
-@version 0.6
-@date 17.feb.2014
-"""
-
 import time
 import random
 import logging
@@ -67,6 +56,8 @@ def main(argv=None):
     if len(argv) == 1:
         utilisation()
         return 0
+    
+    else:
 
     NUMBER_OF_PROCESSES = 4
     TASKS1 = []
@@ -75,38 +66,52 @@ def main(argv=None):
     # Create queues
     task_queue = Queue()
     done_queue = Queue()
+    
+    mlleThread = []
+    mmeThread = []
+    mThread = []
 
     with open(working_dir+argv[1], 'r') as f:
     #Dites bonjour a chaque personne de fichier
         for ligne in f:
            if ligne[0:2] == "M.":
-               TASKS2.append((dites_bonjour, (ligne.strip(' \r\n'))))
+               mThread.append((dites_bonjour, (ligne.strip(' \r\n'))))
            if ligne[0:4] == "Mme.":
-               TASKS1.append((dites_bonjour, (ligne.strip(' \r\n'))))
+               mmeThread.append((dites_bonjour, (ligne.strip(' \r\n'))))
+           if ligne[0:5] == "Mlle.":
+               mlleThread.append((dites_bonjour, (ligne.strip(' \r\n'))))
            #logging.info("Ligne: %s" % (ligne.strip(' \r\n')))
 
-    
     # Submit tasks
-    for task in TASKS1:
-        logging.info(task)
-        task_queue.put(task)
+    for mlle in mlleThread:
+        logging.info(mlle)
+        task_queue.put(mlle)
 
     # Start worker processes
     for i in range(NUMBER_OF_PROCESSES):
         Process(target=worker, args=(task_queue, done_queue)).start()
 
     # Get and print results
-    for i in range(len(TASKS1)):
-        logging.info(done_queue.get())
+    for i in range(len(mlleThread)):
+        print done_queue.get()
 
     # Add more tasks using `put()`
-    for task in TASKS2:
-        logging.info(task)
-        task_queue.put(task)
+    for mme in mmeThread:
+        logging.info(mme)
+        task_queue.put(mme)
 
     # Get and print some more results
-    for i in range(len(TASKS2)):
-        logging.info(done_queue.get())
+    for i in range(len(mme)):
+        print done_queue.get()
+        
+    # Add more tasks using `put()`
+    for m in mThread:
+        logging.info(m)
+        task_queue.put(m)
+
+    # Get and print some more results
+    for i in range(len(m)):
+        print done_queue.get()
 
     # Tell child processes to stop
     for i in range(NUMBER_OF_PROCESSES):

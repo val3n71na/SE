@@ -1,5 +1,3 @@
-#Ciubuc Alexandra
-
 import socket
 
 # create a socket object

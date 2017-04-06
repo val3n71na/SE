@@ -1,4 +1,3 @@
-#Ciubuc Alexandra
 import socket
 import time
 
